@@ -1,239 +1,204 @@
 # motion-deck
 
-손그림 일러스트 + 툰 셰이딩 3D가 움직이는 **단일 파일 HTML 프레젠테이션**을 `deck.json` 하나로 만드는 도구 겸 AI 에이전트 스킬.
+**원자료를 넣으면 손그림 스타일의 내레이션 강의 영상이 나온다.**
+Source material in, narrated hand-drawn lecture video out.
 
-- 손그림 선·종이 질감(기본은 떨림 없음, `boil: true`로 12fps 손떨림), 찢긴 종이 전환, 텍스트 자동 배치·자동 안무
-- 3D 모델(프리셋 phone/laptop, 도형 조합, GLB)을 툰 셰이딩 + 잉크 외곽선으로 렌더, 3D 지점에 지시선
-- 세로 화면(1080×1920) 자동 대응, 고해상도 대응, 사용 글자만 담은 폰트 서브셋
-- 자동 검수(겹침·화면 이탈·실제 픽셀 대비), PNG 시트, MP4 출력
-- **내레이션 영상**: 대본에 큐를 찍으면 TTS(Supertonic) 음성에 맞춰 요소가 등장하는 MP4 + 자막(SRT)
+텍스트·PDF·PPT 같은 강의 자료와 기준 색 하나만 정하면, 대본 작성 → 일러스트 생성 → TTS 음성 → 말에 맞춘 애니메이션 → 자동 검수 → MP4까지 명령 하나로 만든다. 중간 결과물(스토리보드, 그림, 음성, 덱)은 모두 파일로 남아서 고친 부분만 다시 만들 수 있다.
 
-결과물 HTML은 외부 요청 없이 오프라인에서 열린다. 편집 가능한 PowerPoint가 필요한 용도에는 맞지 않는다.
+![AI를 활용한 사무직의 하루 — 슬라이드 시트](docs/images/office-ai.jpg)
+
+<table><tr>
+<td><img src="docs/images/chart-scatter.jpg" alt="산점도"></td>
+<td><img src="docs/images/table.jpg" alt="표"></td>
+<td><img src="docs/images/chart-bar.jpg" alt="전후 비교 막대그래프"></td>
+</tr></table>
 
 ---
 
-## 1. 요구 사항
+## 무엇을 하나
 
-| 항목 | 용도 | 필수 |
-|---|---|---|
-| Python 3.9+ | 빌드·검수 스크립트 | ✅ |
-| `pip install -r requirements.txt` | playwright, Pillow, fontTools, brotli | ✅ |
-| `playwright install chromium` | 헤드리스 렌더링(검수·시트·영상) | 검수 시 ✅ |
-| ffmpeg | `--video` MP4 출력 | 선택 |
-| `supertonic`, `faster-whisper`, `numpy`, `soundfile` | 내레이션 영상(`sync.py`) | 선택 |
-| Node.js 18+ | 런타임 수정 후 재빌드할 때만 | 선택 |
-| 인터넷 | 빌드 시 Google Fonts 서브셋 다운로드 | 선택(`--offline` 가능) |
+- **명령 하나로 강의 영상**: `python md.py make projects/<이름>` → `lecture.mp4` + 자막(SRT) + 품질 리포트
+- **말에 맞춰 움직이는 화면**: 내레이션에 큐 `[[c1]]`를 찍으면 해당 단어를 말하는 순간 제목·카드·표의 행·그래프 막대가 나타난다. TTS 음성의 실제 발화 시각을 음성인식으로 찾아 맞춘다(오차 0.1초 안팎).
+- **새로 그리지 않고 재사용**: 표·카드·흐름도·그래프가 변형(variant)을 가진 컴포넌트로 준비되어 있고, 완성된 강의의 도식이 라이브러리에 쌓여 다음 강의의 참고가 된다.
+- **기준 색 하나 → 팔레트 전체**: 배경 파스텔, 글자색, 강조색, 그래프 색까지 자동 생성. 글자 대비와 색각이상 구분을 계산으로 보장한다.
+- **교육용 가독성 기본값**: 본문 40px(1080p), 넉넉한 줄 간격, 균형 줄바꿈, 28px 미만 글자 자동 경고.
+- **자동 검수**: 텍스트 겹침, 화면 이탈, 실제 배경 픽셀 기준 대비, 작은 글자, 렌더 오류를 슬라이드마다 검사한다.
+- **데이터 정직성**: 원자료에 수치가 없어 예시 수치를 쓰면 화면에 "예시 수치"가 표시되고, 내레이션이 그 사실을 밝히지 않으면 스토리보드 단계에서 막힌다.
+- **HTML도 그대로 결과물**: 영상과 같은 내용이 오프라인에서 열리는 HTML 한 장으로도 나온다(키보드·클릭·스와이프로 넘김).
+
+## 작동 방식
+
+```
+projects/<이름>/
+  project.json   ← 제목, 기준 색, 목소리, 분량, 요구 사항(brief)
+  sources/       ← md · txt · pdf · pptx · docx
+
+  ① ingest      원자료 텍스트 추출
+  ② storyboard  슬라이드별 템플릿 선택 · 빈칸 채우기 · 내레이션 · 큐         Claude (claude -p)
+  ③ assets      개념 일러스트 병렬 생성 → 흰 배경 제거                        Codex 이미지 생성
+  ④ deck        템플릿 펼치기 · 팔레트 · 배경 순환
+  ⑤ narrate     TTS → 음성인식으로 큐 시각 정렬 → 음성 트랙 · 자막              Supertonic · faster-whisper
+  ⑥ build · qa  HTML 한 장 + 자동 검수
+  ⑦ render      브라우저 여러 개로 병렬 렌더(정지 구간은 복사) → MP4            Playwright · ffmpeg
+  ⑧ report      영상 · 시트 · 싱크 · QA · 팔레트 · 소요 시간 한 페이지
+```
+
+LLM이 쓰는 단계는 ②뿐이고, 나머지는 같은 입력이면 같은 결과가 나오며 단계별로 캐시된다. 원고 한 줄을 고치면 그 슬라이드의 음성과 이후 단계만 다시 만든다.
+
+## 빠른 시작
+
+### 1. 설치
 
 ```bash
 pip install -r requirements.txt
 playwright install chromium
+# 강의 영상 파이프라인
+pip install supertonic faster-whisper numpy soundfile opencv-python PyMuPDF python-pptx
+npm i -g @openai/codex      # 일러스트 생성 (로그인 필요)
+# 스토리보드: Claude Code CLI(claude) 로그인 또는 ANTHROPIC_API_KEY
 ```
+ffmpeg가 PATH에 있어야 한다. GPU는 필요 없다(음성인식은 CPU로 돈다).
 
-## 2. 빠른 시작
+### 2. 예제 덱 열어 보기 (설치 없이)
+
+[`examples/folio/folio.html`](examples/folio/folio.html)을 브라우저로 연다. `←` `→` 이동, `F` 전체화면, `R` 다시 재생.
+
+### 3. 강의 영상 만들기
 
 ```bash
-# 예제 빌드 → out/folio.html
-python scripts/build.py examples/folio/deck.json -o out/folio.html
-
-# 검수: 가로/세로 시트 + qa.json (ERROR가 있으면 종료 코드 1)
-python scripts/capture.py out/folio.html --out out/shots --qa --portrait
+mkdir -p projects/my-lecture/sources
+cp 강의자료.md projects/my-lecture/sources/
 ```
 
-`out/folio.html`을 브라우저로 연다.
-조작: `←` `→` / 클릭(왼쪽 30%는 이전) / 스와이프 · `F` 전체화면 · `R` 현재 슬라이드 다시 재생 · URL `#3`으로 3번 슬라이드.
+```json
+// projects/my-lecture/project.json
+{
+  "title": "AI로 내 식습관 점검하기",
+  "color": "#2FA36B",
+  "voice": "M1",
+  "fps": 24,
+  "length": "4min",
+  "audience": "AI를 일상에 활용해 보고 싶은 직장인",
+  "brief": "표를 1개 포함한다. 주의사항은 빠짐없이 넣는다. 마지막 직전에 실습 과제."
+}
+```
 
-빌드된 예제는 `examples/folio/folio.html`에도 들어 있다(설치 없이 바로 열어 보기).
+```bash
+python md.py make projects/my-lecture
+# → projects/my-lecture/build/lecture.mp4, report.html
+```
 
-## 3. 내 덱 만들기
+| 필드 | 뜻 |
+|---|---|
+| `color` | 기준 색 하나. 팔레트 전체가 여기서 나온다 (`palette`로 일부 덮어쓰기 가능) |
+| `voice` | Supertonic 목소리 `M1`–`M5`, `F1`–`F5` (`speed`로 속도) |
+| `fps` | 렌더 fps. 강의는 24 권장 (기본 12) |
+| `brief` | 스토리보드에 전달되는 요구 사항 — 장면 순서, 꼭 넣을 표·그래프 종류 등 |
+| `font` | Google Fonts 고딕 이름 (기본 `Noto Sans KR`) |
+| `brand`, `label` | 화면 왼쪽 위 로고 글자, 오른쪽 위 라벨 |
 
-1. `examples/folio/`를 복사한다.
-2. `deck.json`의 `meta`, `slides`를 바꾼다. 이미지는 `assets/`에 넣고 `assets.images`에 키로 등록.
-3. 빌드 → 검수 → `out/shots/sheet_L.png` 확인 → 고치기를 ERROR 0이 될 때까지 반복.
+### 4. 고치고 다시 만들기
 
-최소 예:
+| 고칠 것 | 방법 | 다시 도는 범위 |
+|---|---|---|
+| 내레이션·화면 문구·수치 | `build/storyboard.json` 직접 수정 | 해당 슬라이드 음성 + 이후 단계 (약 3분) |
+| 그림 하나 | `build/assets/<키>.png` 삭제 | 그 그림만 다시 생성 |
+| 크기·간격·등장 방식 | `templates/lecture/_set.json` | 빌드·렌더 |
+| 처음부터 다시 쓰기 | `--redo storyboard` (이전 버전은 `build/history/`에 백업) | 전체 |
+
+실측(Windows 10, 16코어 CPU, 11장·약 3분 강의): 처음 실행 약 16분(스토리보드 3.5 · 그림 1.3 · 음성 3 · 렌더 3.5분), 수정 후 재실행 약 3.5분.
+
+## 템플릿과 도식 컴포넌트
+
+슬라이드는 레시피(`templates/lecture/*.json`)로 만든다. LLM은 레시피를 고르고 빈칸만 채우며, 좌표·색·등장 순서는 레시피가 정한다.
+
+`cover` · `section` · `concept-left` / `concept-right` / `concept-hero` · `bullets-art` · `cards` · `flow` · `table` · `chart` · `quote` · `summary` · `ending`
+
+구조가 있는 내용은 컴포넌트를 데이터와 `variant`만 바꿔 쓴다.
+
+| 컴포넌트 | variant | 예 |
+|---|---|---|
+| 표 `table` | `compare` · `matrix`(✓✗△) · `before-after` · `steps` | 기록 방법 비교, 도구별 가능 여부, 전후 대비, 실습 순서 |
+| 카드 `cards` | `icon`(일러스트) · `number`(큰 번호, 그림 생성 없음) | 역할 세 가지, 주의점 |
+| 흐름도 `flow` | `linear` · `loop`(되돌아가는 연결) | 계획 → 실행 → 검수 →(반려)→ 재작업 |
+| 그래프 `chart` | `donut` · `bar`(묶음·전후 증감) · `line`(단계 표시) · `scatter`(강조 영역) | 업무 시간 비중, 전후 소요 시간, 활용 인원 추이 |
+
+각 컴포넌트에는 가독성 한도(열 수, 글자 수 등)가 있어서 넘치면 LLM이 스스로 고친다. 완성된 강의의 도식은 `library/<컴포넌트>/`에 저장되어 다음 강의 스토리보드에 예시로 들어간다. → [references/components/](references/components/README.md)
+
+<table><tr>
+<td><img src="docs/images/diet-check.jpg" alt="AI로 내 식습관 점검하기 — 슬라이드 시트"></td>
+<td><img src="docs/images/folio.jpg" alt="folio 제품 가이드 예제 — 3D·손그림 쇼케이스"></td>
+</tr><tr>
+<td align="center">강의 예: 표 · 번호 카드 · 일러스트</td>
+<td align="center">쇼케이스 예: 3D 모델 · 지시선 · 손떨림(<code>boil: true</code>)</td>
+</tr></table>
+
+## 덱을 직접 쓰기 (파이프라인 없이)
+
+`deck.json` 하나로 HTML 프레젠테이션을 만들 수도 있다. 텍스트 요소에는 좌표를 주지 않는다(레이아웃 컬럼에 자동으로 쌓인다). 좌표는 가로 1920×1080 기준.
+
 ```json
 {
-  "meta": { "title": "AI 교육 안내", "brand": "AX.", "label": "INTERNAL — 2026" },
+  "meta": { "title": "AI 교육 안내", "brand": "AX." },
   "slides": [
-    { "layout": "hero", "bg": "paper", "elements": [
-      { "type": "blob", "x": 1420, "y": 560, "r": 400, "color": "sky" },
-      { "type": "kicker", "text": "AI TRAINING" },
-      { "type": "title", "lines": ["일하는 방식이", "바뀝니다"], "accent": 1, "mark": "squiggle" },
-      { "type": "sticker", "shape": "star", "x": 1700, "y": 260 }
-    ]},
     { "layout": "text-left", "bg": "mint", "elements": [
       { "type": "kicker", "text": "01 — WHY" },
       { "type": "title", "lines": ["반복 업무는", "AI에게"], "accent": 1 },
       { "type": "bullets", "items": ["보고서 초안 작성", "회의록 정리", "데이터 요약"] },
-      { "type": "stats", "items": [ { "label": "절감 시간", "value": "6", "unit": "시간/주" } ] }
+      { "type": "blob", "x": 1400, "y": 560, "r": 380, "color": "sky" }
     ]}
   ]
 }
 ```
-텍스트 요소에는 좌표를 주지 않는다(레이아웃 컬럼에 자동으로 쌓임). 좌표는 가로 1920×1080 기준.
-
-전체 필드: `references/deck-schema.md` · 슬라이드 레시피: `references/design-playbook.md` · 3D: `references/models.md`
-
-## 4. 스크립트 옵션
-
-**build.py**
-```
-python scripts/build.py deck.json -o out/deck.html [--offline] [--runtime path/to/motion-deck.js]
-```
-- 검증 ERROR(알 수 없는 type, 없는 이미지/모델, 콜아웃 대상 누락 등)가 있으면 빌드하지 않는다.
-- `--offline`: 폰트를 받지 않고 시스템 폰트 사용.
-
-**capture.py**
-```
-python scripts/capture.py deck.html --out shots [옵션]
-  --qa               레이아웃 검수 → qa.json, ERROR 시 종료 코드 1
-  --portrait         세로판(1080×1920)도 렌더/검수
-  --timeline 0.4,1.2 각 슬라이드의 해당 시점 프레임 저장
-  --slides 2,3       일부 슬라이드만(1부터)
-  --video deck.mp4   전체 재생 영상(ffmpeg), --hold 1.5 슬라이드별 정지 시간
-  --audio a.wav      내레이션 음성 합치기(sync.py 결과, 이때 --hold 기본 0)
-  --subs c.srt       자막 트랙 넣기(소프트 자막, 플레이어에서 켜고 끔)
-  --crf 20           영상 화질(낮을수록 고화질·대용량, 23이면 약 절반)
-  --frame-format png 무손실 프레임 전달(기본 jpeg q95보다 약 2배 느림)
-  --scale 2          2배 해상도로 캡처
-  --anchors          모델별 콜아웃 앵커 이름 출력
-```
-Chromium을 못 찾으면 환경 변수 `CHROME_PATH`에 실행 파일 경로를 지정한다.
-
-## 5. 내레이션 강의 영상 (TTS 싱크)
-
-슬라이드에 `narration`을 쓰고, 요소의 `at`을 큐(`"@이름"`)로 지정한다. 문법은 `references/deck-schema.md` "내레이션과 큐".
-
-```json
-{ "narration": "첫 번째 특징은 [[light]]가볍다는 점입니다. 무게는 [[w]]{1.2kg|일 점 이 킬로그램}입니다.",
-  "elements": [ { "type": "title", "lines": ["가방 속", "한 권의 노트처럼"], "at": "@light" },
-                { "type": "stats", "items": [...], "at": "@w" } ] }
-```
 
 ```bash
-pip install supertonic faster-whisper numpy soundfile
-
-# 1) TTS + 큐 시각 계산 → deck.resolved.json, narration.wav, captions.srt
-python scripts/sync.py examples/lecture/deck.json -o out/lecture/narr --voice M1
-
-# 2) 빌드·검수 (resolved 파일을 빌드)
-python scripts/build.py examples/lecture/deck.resolved.json -o out/lecture/lecture.html
-python scripts/capture.py out/lecture/lecture.html --out out/lecture/shots --qa --portrait
-
-# 3) 영상 (음성 + 자막 트랙 포함)
-python scripts/capture.py out/lecture/lecture.html --out out/lecture/shots --video out/lecture/lecture.mp4     --audio out/lecture/narr/narration.wav --subs out/lecture/narr/captions.srt
+python scripts/build.py deck.json -o out/deck.html
+python scripts/capture.py out/deck.html --out out/shots --qa --portrait   # 시트 + 검수
 ```
 
-**sync.py 옵션**
-```
---voice M1            Supertonic 목소리 M1–M5 / F1–F5      --speed 1.05   --steps 8 (품질)
---lead 0.6 --tail 0.8 슬라이드마다 목소리 앞/뒤 여백(초)       --silent 3.0   내레이션 없는 슬라이드 길이
---align whisper       (기본) 한 번에 합성 → faster-whisper 단어 시각을 대본에 정렬 + 무음 구간으로 보정
-        segments      큐 사이를 따로 합성 → 큐 시각 정확, STT 불필요(문장 중간 큐에서는 억양이 끊길 수 있음)
-        ratio         STT 없이 글자 비율로 추정(초안용)
---whisper large-v3-turbo   --device cpu (기본. Windows에서 cuDNN이 없으면 cuda는 멈출 수 있음)
---redo 2,9            해당 슬라이드만 다시 합성(나머지는 캐시 재사용 — 대본·목소리 설정이 같으면 자동 재사용)
-```
-- 결과 `timeline.json`에 슬라이드별 시작/길이, 큐 시각, 정렬 일치율(`coverage`)이 남는다. 일치율 60% 미만이면 WARN.
-- 영상은 덱의 `theme.fps`(기본 12, 강의는 `project.json`의 `"fps": 24` 권장)로 렌더해 그대로 인코딩(12fps는 24fps로 균등 복제)(x264 `--crf 20`, tune animation ≈ 36초에 20MB, `--crf 23`이면 절반). 렌더 속도는 프레임당 약 0.14초(36초 영상 ≈ 1분). 슬라이드 사이 전환 0.5s는 음성 트랙에 무음으로 들어가 싱크가 어긋나지 않는다.
-- 기본값은 손떨림 없음(`boil: false`). 모델 부유까지 줄이려면 `theme.motion: "calm"`, 등장 후 완전 정지는 `"still"`.
-- `capture.py --video`에 `--slides`를 쓰면 음성 트랙과 어긋난다. 내레이션 영상은 전체를 렌더한다.
+내레이션을 붙이려면 슬라이드에 `"narration": "... [[c1]]반복 업무는 ..."`, 요소에 `"at": "@c1"`을 쓰고 `scripts/sync.py`를 거친다. 전체 필드는 [deck-schema.md](references/deck-schema.md), 명령 옵션은 [cli.md](references/cli.md).
 
-## 5-1. 완전 자동 파이프라인 (원자료 → 강의 MP4)
+## AI 에이전트와 함께 쓰기
 
-프로젝트 폴더에 `project.json`과 `sources/`만 넣고 명령 하나로 끝까지 만든다.
-
-```bash
-python md.py make projects/agent-orchestration            # 전체 실행 (바뀐 단계만 다시)
-python md.py make projects/agent-orchestration --redo storyboard   # 해당 단계부터 강제 재실행
-python md.py make projects/agent-orchestration --until build       # 중간까지만
-```
-
-`project.json`: `title`, `color`(기준 색 하나 → 팔레트 자동), `voice`(M1–M5/F1–F5), `brand`, `label`, `length`, `audience`, `templates`(기본 `lecture`), `palette`(덮어쓸 색만), `speed`.
-
-| 단계 | 하는 일 | 엔진 | 결과 (build/) |
-|---|---|---|---|
-| ingest | md·txt·pdf·pptx·docx 텍스트 추출 | 결정적 | source.md |
-| storyboard | 내레이션·템플릿 선택·빈칸 채우기·큐 | `claude -p` (실패 시 API) | storyboard.json, script.md |
-| assets | 일러스트 병렬 생성 → 흰 배경 제거 | Codex 이미지 생성 | assets/*.png |
-| deck | 템플릿 펼치기 + 팔레트 + 배경 순환 | 결정적 | deck.json |
-| narrate | TTS + 큐 정렬 | Supertonic + faster-whisper | narr/ |
-| build · qa | 단일 HTML + 자동 검수 | 결정적 | lecture.html, shots/ |
-| render | 병렬 브라우저 렌더 + 음성·자막 | Playwright × N + ffmpeg | lecture.mp4 |
-| report | 품질 리포트 | — | report.html |
-
-- `storyboard.json`을 직접 고치면 원자료가 바뀌지 않는 한 그대로 쓰인다(이후 단계만 다시).
-- 에셋은 프롬프트별로 캐시. 하나만 다시 만들려면 `build/assets/<키>.png`를 지우고 다시 실행.
-- 도식 컴포넌트: 표(`table`: compare · matrix · before-after · steps), 카드(`cards`: icon · number), 흐름도(`flow`: linear · loop), 그래프(`chart`: donut · bar · line · scatter)를 `variant`로 변형해서 쓴다. 완성된 강의의 도식은 `library/<컴포넌트>/`에 쌓여 다음 강의의 참고 예시가 된다 → `references/components/README.md`
-- 템플릿: `templates/lecture/*.json` (cover · section · concept-left/right/hero · bullets-art · cards · flow · quote · summary · ending). 형식은 `pipeline/deck.py` 상단 주석.
-
-## 6. AI 에이전트에서 쓰기
-
-저장소 루트에 에이전트용 작업 규칙이 들어 있다. 이 폴더를 그대로 열면 각 도구가 자동으로 읽는다.
+이 폴더를 작업 디렉터리로 열면 각 도구가 규칙 문서를 자동으로 읽는다. 다른 곳에서 쓸 때는 폴더째 복사하면 된다(경로는 모두 상대 경로).
 
 | 파일 | 읽는 도구 | 내용 |
 |---|---|---|
-| `AGENTS.md` | Codex CLI, Cursor, 기타 AGENTS.md 지원 에이전트 | 공통 규칙: 환경, 명령, 파이프라인·캐시, 컴포넌트 재사용, 런타임 수정 규칙, 품질 기준, 함정 |
-| `CLAUDE.md` | Claude Code | `@AGENTS.md`를 불러오고 Claude Code 전용 지침만 추가 |
-| `SKILL.md` | claude.ai Skills / Claude Code 스킬 | 덱(deck.json) 한 장을 만드는 워크플로 |
+| [AGENTS.md](AGENTS.md) | Codex CLI, Cursor 등 | 환경, 명령, 캐시 규칙, 컴포넌트 재사용, 런타임 수정 규칙, 품질 기준, 알려진 함정 |
+| [CLAUDE.md](CLAUDE.md) | Claude Code | AGENTS.md를 불러오고 Claude Code 전용 지침 추가 |
+| [SKILL.md](SKILL.md) | claude.ai Skills / Claude Code 스킬 | 덱 한 장을 만드는 워크플로 |
 
-| 환경 | 설치 |
+CLI가 PATH에 없으면 `CODEX_PATH`, `CLAUDE_PATH`, `CHROME_PATH`로 위치를 지정한다.
+
+## 저장소 구조
+
+```
+md.py               파이프라인 오케스트레이터
+pipeline/           ingest · storyboard · llm · assets · deck · palette · components · report
+templates/lecture/  슬라이드 레시피 + _set.json(타이포 스케일·폰트·최소 글자 크기)
+library/            완성된 강의에서 모은 표·카드·흐름도·그래프 예시
+runtime/            캔버스 런타임 (src/ → npm run build → dist/motion-deck.js)
+scripts/            build.py · capture.py · sync.py
+references/         스키마 · 디자인 레시피 · 컴포넌트 · 명령어 레퍼런스
+examples/           folio(쇼케이스) · lecture(내레이션 예제)
+projects/           강의 예제 3개의 입력(project.json, sources/) — build/는 생성물이라 저장소에 없음
+```
+
+## 문서
+
+| 문서 | 내용 |
 |---|---|
-| Claude Code · Codex CLI · 기타 | 이 폴더를 작업 디렉터리로 연다(다른 곳에서 쓸 때는 폴더째 복사 — 경로는 모두 상대 경로). CLI가 PATH에 없으면 `CODEX_PATH`·`CLAUDE_PATH` 지정 |
-| claude.ai | Settings → Capabilities → Skills → 이 폴더를 zip으로 업로드 (SKILL.md 기준) |
-| Claude Code 스킬로만 | `~/.claude/skills/motion-deck/` 또는 프로젝트 `.claude/skills/motion-deck/`에 복사 |
+| [references/cli.md](references/cli.md) | 모든 명령과 옵션, 문제 해결 |
+| [references/deck-schema.md](references/deck-schema.md) | deck.json 전체 필드, 타이포 스케일, 내레이션·큐 문법 |
+| [references/components/](references/components/README.md) | 표·카드·흐름도·그래프 컴포넌트와 규칙 |
+| [references/design-playbook.md](references/design-playbook.md) | 슬라이드 레시피 |
+| [references/extending.md](references/extending.md) | 런타임에 요소·레이아웃 추가 |
+| [references/models.md](references/models.md) | 3D 모델 (프리셋, 도형 조합, GLB) |
+| [references/pipeline.md](references/pipeline.md) | 멀티에이전트 구성 (Planner → Author → Builder → Inspector → Critic) |
 
-AGENTS.md를 지원하지 않는 에이전트에는 시스템 프롬프트에 다음 한 줄을 넣는다.
-```
-motion-deck 저장소에서 일할 때는 먼저 motion-deck/AGENTS.md를 읽고 그 규칙을 따른다.
-```
+## 라이선스 · 출처
 
-에이전트에게 읽힐 문서 순서: `SKILL.md` → `references/design-playbook.md` → `references/deck-schema.md` → (필요 시) `models.md` / `extending.md`.
-역할을 나눈 파이프라인(Planner → Author → Builder → Inspector → Critic) 구성은 `references/pipeline.md`.
-
-## 7. 폴더 구조
-
-```
-motion-deck/
-├── README.md              (이 파일)
-├── SKILL.md               에이전트용 워크플로
-├── requirements.txt
-├── references/            deck-schema · design-playbook · models · extending · pipeline
-├── runtime/
-│   ├── dist/motion-deck.js  빌드된 런타임(Three.js 포함). build.py가 HTML에 인라인
-│   ├── src/                 core · text · shapes · elements · three-layer · presets · main
-│   └── package.json
-├── scripts/               build.py · capture.py · sync.py(TTS 싱크)
-└── examples/
-    ├── folio/             예제 8장(deck.json, assets, 빌드 결과, 시트)
-    └── lecture/           내레이션 예제 3장(큐 사용)
-```
-
-## 8. 런타임 수정
-
-```bash
-cd runtime
-npm install
-npm run build        # dist/motion-deck.js 갱신
-```
-새 요소·스티커·프리셋·레이아웃을 추가하는 방법은 `references/extending.md`. 수정 후에는 예제를 다시 빌드하고 `--qa --portrait`로 회귀 확인.
-
-## 9. 문제 해결
-
-| 증상 | 원인 / 해결 |
-|---|---|
-| 화면 상단에 빨간 ERROR 띠 | 렌더 중 예외. 메시지대로 수정(앵커 이름 오타가 가장 흔함 → `--anchors`로 확인) |
-| 한글이 기본 고딕으로 보임 | 오프라인 빌드였거나 폰트 다운로드 실패. 빌드 로그의 `NOTE font ...` 확인, 또는 `theme.fonts`에 로컬 폰트 파일 지정 |
-| 3D가 안 보임 | 브라우저 WebGL 꺼짐. 헤드리스 검수는 SwiftShader로 동작 |
-| 세로판에서 요소가 어긋남 | 해당 요소에 `"p": {...}`로 세로 전용 값 덮어쓰기 |
-| capture.py가 Chromium을 못 찾음 | `playwright install chromium` 또는 `CHROME_PATH` 지정 |
-| `unresolved cue '@x'` ERROR | 큐가 남은 deck.json을 빌드함 → `sync.py` 실행 후 `*.resolved.json`을 빌드 |
-| sync.py가 whisper 단계에서 멈춤 | `--device cuda`에서 cuDNN/cuBLAS DLL 누락. 기본값 `--device cpu` 사용 |
-| 큐가 말보다 늦거나 빠름 | `timeline.json`의 coverage 확인. 숫자·영문은 `{표기|읽기}`로 읽는 법을 지정, 또는 `--align segments` |
-| 콘솔 한글 깨짐 | 스크립트가 UTF-8로 출력. 그래도 깨지면 `PYTHONUTF8=1` |
-| 대비 WARN | 파스텔 배경 위 빨간 제목(2.8~3.0)은 대개 허용. ERROR(<2.0)는 반드시 수정 |
-
-## 라이선스 / 출처
-
-- 런타임에 Three.js(MIT)가 번들되어 있다.
-- 디자인 방향은 re-presentation.jp의 HTML 슬라이드 샘플(plume. Product Guide)을 분석해 일반화한 것이며, 원본 코드·에셋·폰트는 포함하지 않는다.
+- 이 저장소의 코드와 문서: [MIT](LICENSE)
+- 런타임 번들에 [Three.js](https://threejs.org/)(MIT)가 포함되어 있다.
+- 외부 도구(Supertonic, faster-whisper, Codex, Claude, Playwright, ffmpeg)와 폰트(Google Fonts, 주로 SIL OFL)는 각자의 라이선스를 따르며 저장소에 포함되어 있지 않다. 생성된 이미지·음성의 사용 조건도 각 서비스의 약관을 따른다.
+- 그래프 색 검증 방식은 데이터 시각화 지침(categorical palette, CVD 검사)을 따랐다.
