@@ -18,8 +18,11 @@ RULES = """## Output schema
 - Explain, don't read the slide: the slide shows keywords, the narration gives the meaning and an example.
 - Place cue markers [[c1]], [[c2]] ... right before the word at which a visual element should appear.
   Cue names are unique within a slide. Every cue you reference must exist in that slide's narration.
-- English words, acronyms, numbers and units that a Korean TTS might misread: write {표기|읽기},
-  e.g. {AI|에이아이}, {2~3회|두세 번}, {LLM|엘엘엠}. The left side is shown in captions, the right side is spoken.
+- EVERY number must be read in Korean words: write it as {표기|한글 읽기}. Native numerals with counters like
+  시/시간/개/명/번/가지/살 (≤99), Sino numerals otherwise: {9시|아홉 시}, {8시간|여덟 시간}, {240시간|이백사십 시간},
+  {15인|십오 인}, {2~3회|두세 번}, {11월 20일(금)|십일월 이십일 금요일}, {6월|유월}, {10월|시월}, {1.2kg|일 점 이 킬로그램}.
+  No digit may appear outside the left side of {표기|읽기} (checked). English words and acronyms too: {AI|에이아이}, {Zoom|줌}.
+  The left side is shown in captions, the right side is spoken.
 - Do not put [[cues]] or {표기|읽기} inside slot texts — only in narration.
 
 ## Slots
@@ -58,6 +61,11 @@ def check(sb, templates, project, theme):
         if ch.get("data_source") == "example" and not any(w in s.get("narration", "") for w in ("예를 들", "예시", "가정", "가령")):
             errs.append(f"slide {i}: chart uses example numbers — the narration must say so (예를 들어 / 예시로)")
         nar = s.get("narration", "")
+        bare = re.sub(r"\{[^{}|]*\|([^{}]*)\}", lambda m: " " if not re.search(r"\d", m.group(1)) else " #DIGIT# ", nar)
+        bare = re.sub(r"\[\[[\w.-]+\]\]", "", bare)
+        for num in sorted(set(re.findall(r"[^\s]*\d[^\s]*", bare))):
+            errs.append(f"slide {i}: number '{num}' must be written as {{표기|한글 읽기}} (e.g. {{9시|아홉 시}}) — digits are not allowed in the spoken text")
+        if "#DIGIT#" in bare: errs.append(f"slide {i}: the spoken side of a {{표기|읽기}} contains digits — spell it out in Korean")
         have = set(re.findall(r"\[\[([\w.-]+)\]\]", nar))
         refs = set((s.get("cues") or {}).values())
         def walk(o):  # cue references at any depth (cards items, table rows, chart data …)

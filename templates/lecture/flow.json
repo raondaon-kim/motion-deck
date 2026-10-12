@@ -38,7 +38,9 @@
     "$soft+3",
     "$soft+5"
    ],
-   "variant": "{variant}"
+   "variant": "{variant}",
+   "numbered": true,
+   "yLinear": 620
   },
   {
    "type": "text",

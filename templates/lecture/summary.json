@@ -16,7 +16,8 @@
    "r": 360,
    "color": "$soft",
    "enter": "grow",
-   "seed": 10
+   "seed": 10,
+   "if": "art"
   },
   {
    "type": "image",

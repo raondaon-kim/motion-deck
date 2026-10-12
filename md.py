@@ -124,7 +124,8 @@ def main():
     narr = ["--voice", project.get("voice", "M1"), "--lang", project.get("lang", "ko"), "--speed", project.get("speed", 1.05)]
     def do_narrate():
         if py("sync.py", bld / "deck.json", "-o", bld / "narr", *narr, log=log): sys.exit("narrate failed")
-    if stage("narrate", h(fh(bld / "deck.json"), narr), do_narrate): return
+    # the TTS text rules (number spelling) are inputs too
+    if stage("narrate", h(fh(bld / "deck.json"), narr, fh(ROOT / "scripts" / "sync.py"), fh(ROOT / "scripts" / "ko_numbers.py")), do_narrate): return
 
     def do_build():
         if py("build.py", bld / "deck.resolved.json", "-o", bld / "lecture.html", log=log): sys.exit("build failed")

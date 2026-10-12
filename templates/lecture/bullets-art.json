@@ -19,7 +19,8 @@
    "seed": 8,
    "vary": {
     "y": 40
-   }
+   },
+   "if": "art"
   },
   {
    "type": "image",

@@ -152,7 +152,8 @@ def expand(storyboard, project, theme, templates, tset=None):
             errors.append(f"slide {i + 1}: unknown template '{name}' (have: {', '.join(templates)})"); continue
         t = copy.deepcopy(templates[name])
         for sname, kind in t["slots"].items():
-            optional = kind.endswith("?") or "default" in kind
+            # optional: "text?", "back? [...]" (the '?' ends the first word), or a kind with a default
+            optional = kind.endswith("?") or kind.split()[0].endswith("?") or "default" in kind
             if not optional and sb.get("slots", {}).get(sname) in (None, "", [], {}):
                 errors.append(f"slide {i + 1} ({name}): slot '{sname}' ({kind}) is required")
         ctx = SlideCtx(i, sb, (i * 3) % 8, assets, t["slots"])  # *3 -> neighbouring slides never share a hue family

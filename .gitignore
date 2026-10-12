@@ -8,3 +8,11 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# company-internal lecture content (kept locally, not published)
+projects/childcare-practicum/
+library/cards/9f4dc31e9f5a.json
+library/cards/c2c7875cee9b.json
+library/flow/467c6cca503d.json
+library/table/27508c2c3311.json
+library/table/fef9abef4638.json

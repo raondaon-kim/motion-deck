@@ -8,6 +8,7 @@ Narration (per slide):
   "narration": "folio의 무게는 [[w]]{1.2kg|일 점 이 킬로그램}입니다. [[t]]두께는 ..."
     [[name]]          cue: the time the next word starts being spoken
     {shown|spoken}    captions show `shown`, the TTS reads `spoken` (numbers, English, units)
+  numbers left as digits are spelled out in Korean before TTS (scripts/ko_numbers.py): 9시 -> 아홉 시
   a list of strings is joined with spaces.
 
 Elements reference cues (slide-relative seconds after resolving):
@@ -39,6 +40,8 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
+from ko_numbers import spell_numbers  # every number is spoken in Korean words (captions keep digits)
+
 FPS = 12                 # replaced by the deck's theme.fps in main(); must match capture.py
 TRANS = 6 / FPS          # = round(0.5 * fps) / fps, same as capture.py
 TOK = re.compile(r"\[\[([\w.-]+)\]\]|\{([^{}|]*)\|([^{}]*)\}")
@@ -51,12 +54,12 @@ def parse_sentence(raw):
     """-> spoken, shown, {cue: spoken_char_index}"""
     spoken, shown, cues, pos = [], [], {}, 0
     for m in TOK.finditer(raw):
-        lit = raw[pos:m.start()]; spoken.append(lit); shown.append(lit); pos = m.end()
+        lit = raw[pos:m.start()]; spoken.append(spell_numbers(lit)); shown.append(lit); pos = m.end()
         if m.group(1):
             cues[m.group(1)] = len("".join(spoken))
         else:
-            shown.append(m.group(2)); spoken.append(m.group(3))
-    spoken.append(raw[pos:]); shown.append(raw[pos:])
+            shown.append(m.group(2)); spoken.append(spell_numbers(m.group(3)))
+    spoken.append(spell_numbers(raw[pos:])); shown.append(raw[pos:])
     return "".join(spoken), "".join(shown), cues
 
 

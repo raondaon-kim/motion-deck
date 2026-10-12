@@ -54,7 +54,7 @@ python scripts/sync.py deck.json -o out/narr [옵션]
 ```
 결과: `deck.resolved.json`(덱 옆), `narration.wav`, `captions.srt`, `timeline.json`(슬라이드별 시작·길이·큐·정렬 일치율 `coverage`).
 
-대본 문법: `[[이름]]` 큐, `{표기|읽기}` 자막엔 표기·TTS는 읽기. 요소의 `at`: `"@이름"`, `"@이름+0.2"`, `"@start"`, `"@end"`. 자세한 내용은 `deck-schema.md` "내레이션과 큐".
+대본 문법: `[[이름]]` 큐, `{표기|읽기}` 자막엔 표기·TTS는 읽기. 감싸지 않은 숫자는 `ko_numbers.py`가 한국어 읽기로 바꾼다(자막은 그대로). 요소의 `at`: `"@이름"`, `"@이름+0.2"`, `"@start"`, `"@end"`. 자세한 내용은 `deck-schema.md` "내레이션과 큐".
 
 ## 런타임 재빌드
 

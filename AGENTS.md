@@ -48,7 +48,7 @@ pipeline/              ingest(원자료 추출) · storyboard(LLM) · llm(claude
 templates/lecture/     슬라이드 레시피 JSON + _set.json(타이포 스케일·폰트·minText)
 library/<component>/   완성된 강의에서 수확한 표·카드·흐름도·그래프 예시 (다음 스토리보드의 참고)
 runtime/src/           캔버스 런타임: core · text · shapes · elements · diagrams · table · chart · three-layer · main
-scripts/               build.py(검증·인라인) · capture.py(QA·시트·병렬 렌더) · sync.py(TTS·큐 정렬)
+scripts/               build.py(검증·인라인) · capture.py(QA·시트·병렬 렌더) · sync.py(TTS·큐 정렬) · ko_numbers.py(숫자→한국어 읽기)
 references/            deck-schema · design-playbook · models · extending · pipeline · components/*.md
 projects/<name>/       project.json · sources/ · build/(전부 생성물)
 examples/              folio(쇼케이스, boil:true) · lecture(내레이션 예제)
@@ -121,6 +121,10 @@ LLM은 템플릿 이름과 빈칸(slots)만 채운다. 좌표·색은 레시피�
 - 가독성(1080p): 본문·목록 40px, 카드 설명·캡션 32px, 최소 28px(페이지 번호 등 chrome 제외). 마지막 줄에 단어 하나 금지(균형 줄바꿈).
 - **데이터 정직성**: 원자료에 없는 수치는 `data_source: "example"` → 화면에 "예시 수치", 내레이션에 "예시/예를 들어". 수치는 내레이션 주장과 일치해야 한다(가장 큰 몫이라 말하면 실제로 가장 커야 함) — 자동 검사가 못 잡으므로 스토리보드를 읽고 확인한다.
 - 건강·법률 등 주의사항이 원자료에 있으면 빠짐없이 넣는다.
+- **TTS 숫자는 반드시 한국어로 풀어 읽는다.** 스토리보드 내레이션의 모든 숫자는 `{표기|한글 읽기}`로 쓴다(자막=표기, 음성=읽기). 숫자가 그대로 남으면 스토리보드 검증 오류.
+  고유어: 시·시간·개·명·번·가지·살 등 + 99 이하 → `{9시|아홉 시}` `{8시간|여덟 시간}` `{2~3회|두세 번}` / 그 밖은 한자어 → `{240시간|이백사십 시간}` `{15인|십오 인}` `{6월|유월}` `{10월|시월}`.
+  안전망: 그래도 남은 숫자는 `scripts/ko_numbers.py`가 TTS 직전에 같은 규칙으로 변환한다(손으로 고친 스토리보드 포함). 규칙을 바꾸면 `python scripts/ko_numbers.py`로 예시를 확인한다.
+- **출처 정확성**: 실제 안내·규정 문서를 영상으로 만들 때는 스토리보드를 원문과 한 줄씩 대조한다(날짜·요일·기한·자격 요건, "까지/에" 같은 조사까지). 원문에 없는 내용은 넣지 않는다.
 
 ## 9. 알려진 함정
 

@@ -63,7 +63,8 @@ function drawCards(el, t, p, item) {
 // ---------------------------------------------------------------- flow
 function drawFlow(el, t, p, item) {
   const nodes = el.nodes || [], n = nodes.length; if (!n) return;
-  const x0 = el.x ?? 160, y = el.y ?? 640, W = el.w ?? 1600;
+  // a linear flow (no back edges) sits at the visual centre of the content area (yLinear); loops keep room below
+  const x0 = el.x ?? 160, y = (el.back && el.back.length) || el.yLinear == null ? el.y ?? 640 : el.yLinear, W = el.w ?? 1600;
   const size = el.size ?? (n >= 5 ? 34 : 42), f = font('body', size, 700), sf = font('body', Math.max(S.theme.type.caption, Math.round(size * 0.68)), 500);
   const gap = el.gap ?? 90, bw = (W - gap * (n - 1)) / n, lhL = size * 1.25, subPx = Math.max(S.theme.type.caption, Math.round(size * 0.68));
   const maxLines = Math.max(1, ...nodes.map((nd) => wrapBalanced(nd.label || '', f, bw - 36).length)), anySub = nodes.some((nd) => nd.sub);
@@ -84,6 +85,7 @@ function drawFlow(el, t, p, item) {
       if (S.report) { const was = S.hideText; S.hideText = true; lines.forEach((ln, k) => text(ln, cx, ty + k * lh, { font: f, align: 'center' })); S.hideText = was; }
       return;
     }
+    if (el.numbered) text(String(i + 1).padStart(2, '0'), cx, y - bh / 2 - 26, { font: font('display', Math.round(size * 0.82), 700), align: 'center', color: 'accent', alpha: clamp(lp * 1.6 - 0.2) });
     withT(cx, y, jit(i + 90, 2, 0.008), E.outBack(lp), () => {
       const box = roundBox(-bw / 2, -bh / 2, bw, bh, 26, 80 + i);
       sticker(box, nd.color || cols[i % cols.length], { dx: 7, dy: 9, shadow: 0.14 }); stroke(box, 4);
