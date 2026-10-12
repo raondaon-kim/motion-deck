@@ -1,0 +1,10 @@
+# generated outputs (rebuilt by md.py / scripts)
+out/
+projects/*/build/
+projects/*/run.log
+# dependencies & caches
+runtime/node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

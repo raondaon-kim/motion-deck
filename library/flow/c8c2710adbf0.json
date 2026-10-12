@@ -1,0 +1,30 @@
+{
+ "variant": "loop",
+ "title": [
+  "검수 순환 루프"
+ ],
+ "nodes": [
+  {
+   "label": "계획"
+  },
+  {
+   "label": "실행"
+  },
+  {
+   "label": "검수"
+  },
+  {
+   "label": "통합"
+  }
+ ],
+ "back": [
+  {
+   "from": 2,
+   "to": 1,
+   "label": "반려·재작업"
+  }
+ ],
+ "topic": "AI 에이전트 오케스트레이션",
+ "project": "agent-orchestration",
+ "added": "2026-10-12"
+}

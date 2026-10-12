@@ -1,0 +1,55 @@
+{
+ "use": "단계/순서/순환. 박스 3~6개를 화살표로. variant linear(한 방향) · loop(되돌아가는 연결선 포함)",
+ "layout": "top",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1",
+  "nodes": "nodes:3-6 [{label (≤8자), sub?, at: cue}]",
+  "back": "back? [{from, to (0-based node index), label, at: cue}]",
+  "body": "text?",
+  "variant": "linear|loop (default linear)"
+ },
+ "elements": [
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 68,
+   "accent": 0,
+   "at": "{title@}"
+  },
+  {
+   "type": "flow",
+   "nodes": "{nodes}",
+   "back": "{back}",
+   "x": 140,
+   "y": 520,
+   "w": 1640,
+   "colors": [
+    "$soft+2",
+    "$soft+4",
+    "$soft+6",
+    "$soft+1",
+    "$soft+3",
+    "$soft+5"
+   ],
+   "variant": "{variant}"
+  },
+  {
+   "type": "text",
+   "text": "{body}",
+   "if": "body",
+   "x": 960,
+   "y": 940,
+   "w": 1400,
+   "align": "center",
+   "alpha": 0.85,
+   "at": "{body@}"
+  }
+ ]
+}

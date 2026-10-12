@@ -1,0 +1,30 @@
+{
+ "use": "template-set settings (not a slide template): applied to every deck built from this set",
+ "font": "Noto Sans KR",
+ "meta": {
+  "minText": 28
+ },
+ "theme": {
+  "type": {
+   "kicker": 28,
+   "body": 40,
+   "bodyLh": 1.8,
+   "bullet": 40,
+   "bulletLh": 2.0,
+   "caption": 32,
+   "captionLh": 1.6,
+   "cardTitle": 44,
+   "quoteBy": 34,
+   "calloutSub": 24,
+   "gapTitle": 60,
+   "gapBody": 56,
+   "subAnim": "lift",
+   "subStagger": 0.22,
+   "bulletStagger": 0.4,
+   "subDur": 0.6,
+   "overlap": 0.85,
+   "tableHead": 38,
+   "tableCell": 36
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "variant": "line",
+ "title": "팀에 퍼지는 과정",
+ "chart": {
+  "variant": "line",
+  "data_source": "example",
+  "unit": "명",
+  "categories": [
+   "1월",
+   "2월",
+   "3월",
+   "4월",
+   "5월",
+   "6월",
+   "7월",
+   "8월",
+   "9월"
+  ],
+  "series": [
+   {
+    "name": "AI 활용 인원",
+    "values": [
+     2,
+     3,
+     5,
+     8,
+     12,
+     18,
+     24,
+     30,
+     36
+    ]
+   }
+  ],
+  "marks": [
+   {
+    "index": 1,
+    "label": "개인 사용"
+   },
+   {
+    "index": 4,
+    "label": "팀 공용 프롬프트"
+   },
+   {
+    "index": 7,
+    "label": "업무 자동화"
+   }
+  ]
+ },
+ "topic": "AI를 활용한 사무직의 하루",
+ "project": "office-ai",
+ "added": "2026-10-12"
+}

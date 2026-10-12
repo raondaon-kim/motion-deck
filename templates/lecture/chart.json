@@ -1,0 +1,11 @@
+{
+ "use": "그래프. variant로 형태 선택: donut(전체 중 비중) · bar(항목별 크기, 2계열이면 묶은 막대·전후 비교) · line(시간에 따른 변화, 단계 표시) · scatter(두 지표 산점도, 강조 영역). 수치가 원자료에 없으면 data_source example",
+ "layout": "top", "bg": "$soft",
+ "slots": { "kicker": "text?", "title": "lines:1", "chart": "chart spec {variant, data_source, ...} (see Diagram components: chart)", "takeaway": "text? (≤30자, 그래프가 말하는 한 줄)" },
+ "elements": [
+  { "type": "kicker", "text": "{kicker}", "if": "kicker" },
+  { "type": "title", "lines": "{title}", "size": 68, "accent": 0, "at": "{title@}" },
+  { "type": "chart", "$merge": "{chart}", "x": 200, "y": 300, "w": 1520, "h": 640, "at": "{chart@}" },
+  { "type": "text", "text": "{takeaway}", "if": "takeaway", "x": 960, "y": 972, "w": 1400, "align": "center", "weight": 700, "at": "{takeaway@}" }
+ ]
+}

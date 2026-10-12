@@ -1,0 +1,53 @@
+{
+ "use": "개념 하나 설명. 글 왼쪽, 일러스트 오른쪽",
+ "layout": "text-left",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:2",
+  "body": "text",
+  "art": "illustration"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 1400,
+   "y": 560,
+   "r": 400,
+   "color": "$soft+4",
+   "enter": "grow",
+   "seed": 3,
+   "vary": {
+    "x": 40,
+    "y": 40,
+    "r": 30
+   }
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 1400,
+   "y": 550,
+   "w": 600,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "body",
+   "text": "{body}",
+   "at": "{body@}"
+  }
+ ]
+}

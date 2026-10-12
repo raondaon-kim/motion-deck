@@ -1,0 +1,280 @@
+{
+ "meta": {
+  "title": "folio. 강의 데모",
+  "lang": "ko",
+  "brand": "folio.",
+  "label": "PRODUCT GUIDE — 2026"
+ },
+ "theme": {
+  "accent": "#C23A3C",
+  "palette": {
+   "silver": "#D3CEC5"
+  }
+ },
+ "assets": {
+  "images": {
+   "screen": "assets/screen.png",
+   "app": "assets/app.png"
+  }
+ },
+ "models": {
+  "laptop": {
+   "preset": "laptop"
+  },
+  "phone": {
+   "preset": "phone"
+  }
+ },
+ "slides": [
+  {
+   "layout": "hero",
+   "bg": "paper",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1420,
+     "y": 560,
+     "r": 400,
+     "color": "sky",
+     "enter": "right",
+     "seed": 1
+    },
+    {
+     "type": "blob",
+     "x": 160,
+     "y": 1060,
+     "rx": 420,
+     "ry": 240,
+     "color": "butter",
+     "enter": "left",
+     "seed": 2
+    },
+    {
+     "type": "model",
+     "id": "hero",
+     "model": "laptop",
+     "x": 1420,
+     "y": 600,
+     "height": 560,
+     "rot": [
+      22,
+      -28,
+      0
+     ],
+     "rotFrom": [
+      22,
+      -120,
+      0
+     ],
+     "enter": "rise",
+     "textures": {
+      "Screen": "screen"
+     },
+     "colors": {
+      "Body": "silver"
+     },
+     "shadow": true
+    },
+    {
+     "type": "kicker",
+     "text": "LE CARNET NUMÉRIQUE"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "folio."
+     ],
+     "role": "display",
+     "size": 220,
+     "track": -8,
+     "anim": "pop",
+     "at": "@name"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "하루를 적는 노트북"
+     ],
+     "size": 60,
+     "accent": 0,
+     "mark": "squiggle",
+     "at": "@tag"
+    },
+    {
+     "type": "sticker",
+     "shape": "star",
+     "x": 1800,
+     "y": 200,
+     "size": 40,
+     "at": "@tag+0.6"
+    },
+    {
+     "type": "sticker",
+     "shape": "sparkle",
+     "x": 1050,
+     "y": 260,
+     "size": 30,
+     "at": "@tag+0.6"
+    }
+   ],
+   "narration": "안녕하세요. 오늘은 [[name]]{folio|폴리오}라는 노트북을 소개합니다. [[tag]]한 줄로 말하면, 하루를 적는 노트북입니다."
+  },
+  {
+   "layout": "text-right",
+   "bg": "peach",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 500,
+     "y": 560,
+     "r": 380,
+     "color": "butter",
+     "enter": "left"
+    },
+    {
+     "type": "model",
+     "id": "lt",
+     "model": "laptop",
+     "x": 500,
+     "y": 560,
+     "height": 460,
+     "rot": [
+      8,
+      62,
+      0
+     ],
+     "colors": {
+      "Body": "tomato"
+     },
+     "textures": {
+      "Screen": "screen"
+     }
+    },
+    {
+     "type": "sticker",
+     "shape": "feather",
+     "x": 860,
+     "y": 860,
+     "size": 420,
+     "color": "paper2",
+     "rot": 18,
+     "at": "@env"
+    },
+    {
+     "type": "kicker",
+     "text": "01 — LÉGER"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "가방 속",
+      "한 권의 노트처럼"
+     ],
+     "accent": 1,
+     "at": "@light"
+    },
+    {
+     "type": "body",
+     "text": "folio.의 무게는 1.2kg입니다. 13.9mm 두께라 서류 봉투에도 쏙 들어갑니다."
+    },
+    {
+     "type": "stats",
+     "items": [
+      {
+       "label": "무게",
+       "value": "1.2",
+       "unit": "kg"
+      },
+      {
+       "label": "두께",
+       "value": "13.9",
+       "unit": "mm"
+      }
+     ],
+     "at": "@w"
+    }
+   ],
+   "narration": "첫 번째 특징은 [[light]]가볍다는 점입니다. 무게는 [[w]]{1.2kg|일 점 이 킬로그램}, 두께는 [[t]]{13.9mm|십삼 점 구 밀리미터}라서, [[env]]서류 봉투에도 쏙 들어갑니다."
+  },
+  {
+   "layout": "text-left",
+   "bg": "mint",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1340,
+     "y": 600,
+     "rx": 560,
+     "ry": 360,
+     "color": "sky",
+     "enter": "grow"
+    },
+    {
+     "type": "model",
+     "id": "side",
+     "model": "laptop",
+     "x": 1340,
+     "y": 560,
+     "height": 430,
+     "rot": [
+      16,
+      66,
+      0
+     ],
+     "colors": {
+      "Body": "silver"
+     },
+     "float": 6,
+     "sway": 1.5
+    },
+    {
+     "type": "kicker",
+     "text": "02 — PORTS"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "필요한 단자는",
+      "왼쪽에 모두"
+     ],
+     "accent": 1,
+     "at": "@left"
+    },
+    {
+     "type": "body",
+     "text": "USB-C 단자 두 개로 충전과 화면 연결을 동시에 합니다. 이어폰 단자는 오른쪽에 있습니다."
+    },
+    {
+     "type": "callout",
+     "target": {
+      "model": "side",
+      "anchor": "PortUSB1"
+     },
+     "label": "USB-C ①",
+     "sub": "40Gbps · 충전",
+     "dx": -230,
+     "dy": 190,
+     "p": {
+      "dx": 180,
+      "dy": -330
+     },
+     "at": "@usb1"
+    },
+    {
+     "type": "callout",
+     "target": {
+      "model": "side",
+      "anchor": "PortUSB2"
+     },
+     "label": "USB-C ②",
+     "sub": "DISPLAY OUT",
+     "dx": 240,
+     "dy": 170,
+     "ring": 40,
+     "at": "@usb2"
+    }
+   ],
+   "narration": "다음은 단자입니다. [[left]]필요한 단자는 모두 왼쪽에 모여 있습니다. [[usb1]]첫 번째 {USB-C|유에스비 씨} 단자로는 충전을 하고, [[usb2]]두 번째 단자로는 외부 화면을 연결합니다."
+  }
+ ]
+}

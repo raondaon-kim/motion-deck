@@ -1,0 +1,26 @@
+{
+ "variant": "icon",
+ "title": [
+  "자주 보이는 실패"
+ ],
+ "items": [
+  {
+   "title": "역할 과분할",
+   "text": "통신 비용만 커져 느려진다",
+   "art": "many tiny robots passing too many envelopes to each other with tangled criss-crossing lines"
+  },
+  {
+   "title": "기준 부재",
+   "text": "루프가 끝나지 않는다",
+   "art": "a loop arrow spinning endlessly around a confused robot scratching its head"
+  },
+  {
+   "title": "지휘자 병목",
+   "text": "작업까지 떠안아 멈춘다",
+   "art": "a conductor robot buried under papers trying to type and wave a baton at the same time"
+  }
+ ],
+ "topic": "AI 에이전트 오케스트레이션",
+ "project": "agent-orchestration",
+ "added": "2026-10-12"
+}

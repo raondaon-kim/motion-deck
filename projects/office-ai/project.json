@@ -1,0 +1,12 @@
+{
+ "title": "AI를 활용한 사무직의 하루",
+ "color": "#2E6BE6",
+ "voice": "M1",
+ "brand": "AX.",
+ "label": "AI WORK 101",
+ "length": "4min",
+ "fps": 24,
+ "audience": "AI를 업무에 쓰기 시작하려는 사무직 직장인",
+ "brief": "원자료는 장면 7개짜리 스토리보드다. 장면 순서를 지키고, 📊 표시가 있는 장면은 반드시 chart 템플릿으로 지정된 형태를 만든다: 장면1 donut(업무 시간 비중: 문서 작성·메일·회의·자료 조사·반복 작업), 장면2 scatter(x 소요 시간, y 체감 가치, 오른쪽 아래 zone 라벨 'AI에게 맡길 영역'), 장면4 bar(업무별 소요 시간 전후 비교, series [AI 도입 전, AI 도입 후], delta true), 장면5 line(월별 AI 활용 인원, marks로 개인 사용→팀 공용 프롬프트→업무 자동화 단계 표시). 원자료에 수치가 없으므로 그럴듯한 예시 수치를 쓰고 data_source는 example, 내레이션에서 예시라고 밝힌다. 장면3 사례 4개는 cards(icon), 장면6 주의점은 cards(number), 장면7은 실습 과제 슬라이드 뒤에 ending. 표지(cover)로 시작.",
+ "templates": "lecture"
+}

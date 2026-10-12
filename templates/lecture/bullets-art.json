@@ -1,0 +1,52 @@
+{
+ "use": "목록 3~4개 + 작은 일러스트",
+ "layout": "text-left",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1-2",
+  "items": "items:3-4 (strings)",
+  "art": "illustration?"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 1420,
+   "y": 580,
+   "r": 330,
+   "color": "$soft+4",
+   "enter": "grow",
+   "seed": 8,
+   "vary": {
+    "y": 40
+   }
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 1420,
+   "y": 570,
+   "w": 500,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}",
+   "if": "art"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "bullets",
+   "items": "{items}",
+   "at": "{items@}"
+  }
+ ]
+}

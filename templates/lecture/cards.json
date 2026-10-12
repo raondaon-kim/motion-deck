@@ -1,0 +1,40 @@
+{
+ "use": "같은 급의 항목 2~4개를 카드로 나란히. variant icon(아이콘 일러스트) · number(큰 번호, 일러스트 없음: 원칙·체크리스트·실패 사례)",
+ "layout": "top",
+ "bg": "$paper",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1",
+  "items": "items:2-4 [{title (≤10자), text (≤40자), art: {prompt} (icon만), at: cue}]",
+  "variant": "icon|number (default icon)"
+ },
+ "elements": [
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 68,
+   "accent": 0,
+   "at": "{title@}"
+  },
+  {
+   "type": "cards",
+   "items": "{items}",
+   "x": 150,
+   "y": 330,
+   "w": 1620,
+   "h": 620,
+   "colors": [
+    "$soft",
+    "$soft+3",
+    "$soft+5",
+    "$soft+1"
+   ],
+   "variant": "{variant}"
+  }
+ ]
+}

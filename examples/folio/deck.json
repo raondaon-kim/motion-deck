@@ -1,0 +1,719 @@
+{
+ "meta": {
+  "title": "folio. 제품 가이드",
+  "lang": "ko",
+  "brand": "folio.",
+  "label": "PRODUCT GUIDE — 2026"
+ },
+ "theme": {
+  "accent": "#C23A3C",
+  "palette": {
+   "silver": "#D3CEC5"
+  },
+  "boil": true
+ },
+ "assets": {
+  "images": {
+   "screen": "assets/screen.png",
+   "app": "assets/app.png"
+  }
+ },
+ "models": {
+  "laptop": {
+   "preset": "laptop"
+  },
+  "phone": {
+   "preset": "phone"
+  }
+ },
+ "slides": [
+  {
+   "layout": "hero",
+   "bg": "paper",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1420,
+     "y": 560,
+     "r": 400,
+     "color": "sky",
+     "enter": "right",
+     "seed": 1
+    },
+    {
+     "type": "blob",
+     "x": 160,
+     "y": 1060,
+     "rx": 420,
+     "ry": 240,
+     "color": "butter",
+     "enter": "left",
+     "seed": 2
+    },
+    {
+     "type": "model",
+     "id": "hero",
+     "model": "laptop",
+     "x": 1420,
+     "y": 600,
+     "height": 560,
+     "rot": [
+      22,
+      -28,
+      0
+     ],
+     "rotFrom": [
+      22,
+      -120,
+      0
+     ],
+     "enter": "rise",
+     "textures": {
+      "Screen": "screen"
+     },
+     "colors": {
+      "Body": "silver"
+     },
+     "shadow": true
+    },
+    {
+     "type": "kicker",
+     "text": "LE CARNET NUMÉRIQUE"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "folio."
+     ],
+     "role": "display",
+     "size": 220,
+     "track": -8,
+     "anim": "pop"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "하루를 적는 노트북"
+     ],
+     "size": 60,
+     "accent": 0,
+     "mark": "squiggle"
+    },
+    {
+     "type": "sticker",
+     "shape": "star",
+     "x": 1800,
+     "y": 200,
+     "size": 40
+    },
+    {
+     "type": "sticker",
+     "shape": "sparkle",
+     "x": 1050,
+     "y": 260,
+     "size": 30
+    }
+   ]
+  },
+  {
+   "layout": "text-right",
+   "bg": "peach",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 500,
+     "y": 560,
+     "r": 380,
+     "color": "butter",
+     "enter": "left"
+    },
+    {
+     "type": "model",
+     "id": "lt",
+     "model": "laptop",
+     "x": 500,
+     "y": 560,
+     "height": 460,
+     "rot": [
+      8,
+      62,
+      0
+     ],
+     "colors": {
+      "Body": "tomato"
+     },
+     "textures": {
+      "Screen": "screen"
+     }
+    },
+    {
+     "type": "sticker",
+     "shape": "feather",
+     "x": 860,
+     "y": 860,
+     "size": 420,
+     "color": "paper2",
+     "rot": 18
+    },
+    {
+     "type": "kicker",
+     "text": "01 — LÉGER"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "가방 속",
+      "한 권의 노트처럼"
+     ],
+     "accent": 1
+    },
+    {
+     "type": "body",
+     "text": "folio.의 무게는 1.2kg입니다. 13.9mm 두께라 서류 봉투에도 쏙 들어갑니다."
+    },
+    {
+     "type": "stats",
+     "items": [
+      {
+       "label": "무게",
+       "value": "1.2",
+       "unit": "kg"
+      },
+      {
+       "label": "두께",
+       "value": "13.9",
+       "unit": "mm"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "layout": "text-left",
+   "bg": "mint",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1340,
+     "y": 600,
+     "rx": 560,
+     "ry": 360,
+     "color": "sky",
+     "enter": "grow"
+    },
+    {
+     "type": "model",
+     "id": "side",
+     "model": "laptop",
+     "x": 1340,
+     "y": 560,
+     "height": 430,
+     "rot": [
+      16,
+      66,
+      0
+     ],
+     "colors": {
+      "Body": "silver"
+     },
+     "float": 6,
+     "sway": 1.5
+    },
+    {
+     "type": "kicker",
+     "text": "02 — PORTS"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "필요한 단자는",
+      "왼쪽에 모두"
+     ],
+     "accent": 1
+    },
+    {
+     "type": "body",
+     "text": "USB-C 단자 두 개로 충전과 화면 연결을 동시에 합니다. 이어폰 단자는 오른쪽에 있습니다."
+    },
+    {
+     "type": "callout",
+     "target": {
+      "model": "side",
+      "anchor": "PortUSB1"
+     },
+     "label": "USB-C ①",
+     "sub": "40Gbps · 충전",
+     "dx": -230,
+     "dy": 190,
+     "p": {
+      "dx": 180,
+      "dy": -330
+     }
+    },
+    {
+     "type": "callout",
+     "target": {
+      "model": "side",
+      "anchor": "PortUSB2"
+     },
+     "label": "USB-C ②",
+     "sub": "DISPLAY OUT",
+     "dx": 240,
+     "dy": 170,
+     "ring": 40
+    }
+   ]
+  },
+  {
+   "layout": "text-left",
+   "bg": "butter",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1310,
+     "y": 560,
+     "rx": 560,
+     "ry": 470,
+     "color": "sky",
+     "shadow": 0.1
+    },
+    {
+     "type": "model",
+     "id": "front",
+     "model": "laptop",
+     "x": 1310,
+     "y": 600,
+     "height": 620,
+     "rot": [
+      10,
+      -8,
+      0
+     ],
+     "enter": "pop",
+     "textures": {
+      "Screen": "screen"
+     },
+     "colors": {
+      "Body": "silver"
+     }
+    },
+    {
+     "type": "sticker",
+     "shape": "cloud",
+     "x": 940,
+     "y": 300,
+     "size": 60,
+     "at": 1.4
+    },
+    {
+     "type": "sticker",
+     "shape": "sun",
+     "x": 1720,
+     "y": 210,
+     "size": 46,
+     "at": 1.6
+    },
+    {
+     "type": "sticker",
+     "shape": "heart",
+     "x": 1760,
+     "y": 880,
+     "size": 40,
+     "at": 1.8
+    },
+    {
+     "type": "kicker",
+     "text": "03 — ÉCRAN"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "종이처럼",
+      "눈이 편한 화면"
+     ],
+     "accent": 1,
+     "mark": "underline"
+    },
+    {
+     "type": "body",
+     "text": "14인치 화면은 반사를 줄인 무광 코팅입니다. 창가 자리에서도 글자가 또렷합니다."
+    },
+    {
+     "type": "stats",
+     "items": [
+      {
+       "label": "화면",
+       "value": "14",
+       "unit": "인치"
+      },
+      {
+       "label": "밝기",
+       "value": "600",
+       "unit": "nit"
+      }
+     ],
+     "size": 130
+    }
+   ]
+  },
+  {
+   "layout": "text-right",
+   "bg": "lilac",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 480,
+     "y": 600,
+     "r": 400,
+     "color": "pink"
+    },
+    {
+     "type": "model",
+     "id": "mini",
+     "model": "laptop",
+     "x": 400,
+     "y": 680,
+     "height": 380,
+     "rot": [
+      16,
+      24,
+      0
+     ],
+     "colors": {
+      "Body": "cobalt"
+     },
+     "textures": {
+      "Screen": "screen"
+     }
+    },
+    {
+     "type": "model",
+     "id": "ph",
+     "model": "phone",
+     "x": 760,
+     "y": 560,
+     "height": 420,
+     "rot": [
+      6,
+      -18,
+      4
+     ],
+     "colors": {
+      "Body": "cobalt"
+     },
+     "textures": {
+      "Screen": "app"
+     },
+     "enter": "drop",
+     "at": 0.3
+    },
+    {
+     "type": "arrow",
+     "from": [
+      600,
+      330
+     ],
+     "to": [
+      730,
+      300
+     ],
+     "bend": -0.4
+    },
+    {
+     "type": "kicker",
+     "text": "04 — CONTINUITÉ"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "폰에서 적고",
+      "노트북에서 잇기"
+     ],
+     "accent": 1
+    },
+    {
+     "type": "bullets",
+     "items": [
+      "폰에서 쓰던 메모가 열자마자 이어집니다",
+      "사진은 끌어다 놓으면 바로 옮겨집니다",
+      "통화는 노트북 스피커로 받습니다"
+     ]
+    },
+    {
+     "type": "chips",
+     "items": [
+      "메모 동기화",
+      "사진 전송",
+      "통화 연결"
+     ]
+    }
+   ]
+  },
+  {
+   "layout": "top",
+   "bg": "paper",
+   "elements": [
+    {
+     "type": "kicker",
+     "text": "05 — COULEURS"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "세 가지 색에서 고르세요"
+     ],
+     "size": 64
+    },
+    {
+     "type": "blob",
+     "x": 480,
+     "y": 700,
+     "rx": 240,
+     "ry": 230,
+     "color": "pink",
+     "seed": 3
+    },
+    {
+     "type": "blob",
+     "x": 960,
+     "y": 700,
+     "rx": 240,
+     "ry": 230,
+     "color": "lilac",
+     "seed": 4
+    },
+    {
+     "type": "blob",
+     "x": 1440,
+     "y": 700,
+     "rx": 240,
+     "ry": 230,
+     "color": "sage",
+     "seed": 5
+    },
+    {
+     "type": "model",
+     "id": "c1",
+     "model": "laptop",
+     "x": 480,
+     "y": 670,
+     "height": 300,
+     "rot": [
+      24,
+      -30,
+      0
+     ],
+     "colors": {
+      "Body": "tomato"
+     },
+     "textures": {
+      "Screen": "screen"
+     },
+     "seed": 0
+    },
+    {
+     "type": "model",
+     "id": "c2",
+     "model": "laptop",
+     "x": 960,
+     "y": 670,
+     "height": 300,
+     "rot": [
+      24,
+      -30,
+      0
+     ],
+     "colors": {
+      "Body": "cobalt"
+     },
+     "textures": {
+      "Screen": "screen"
+     },
+     "seed": 1.3,
+     "at": 0.15
+    },
+    {
+     "type": "model",
+     "id": "c3",
+     "model": "laptop",
+     "x": 1440,
+     "y": 670,
+     "height": 300,
+     "rot": [
+      24,
+      -30,
+      0
+     ],
+     "colors": {
+      "Body": "silver"
+     },
+     "textures": {
+      "Screen": "screen"
+     },
+     "seed": 2.6,
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "Tomate",
+     "x": 480,
+     "y": 985,
+     "align": "center",
+     "role": "display",
+     "size": 40,
+     "weight": 700,
+     "color": "tomato",
+     "w": 400
+    },
+    {
+     "type": "text",
+     "text": "Cobalt",
+     "x": 960,
+     "y": 985,
+     "align": "center",
+     "role": "display",
+     "size": 40,
+     "weight": 700,
+     "color": "cobalt",
+     "w": 400
+    },
+    {
+     "type": "text",
+     "text": "Nuage",
+     "x": 1440,
+     "y": 985,
+     "align": "center",
+     "role": "display",
+     "size": 40,
+     "weight": 700,
+     "w": 400
+    }
+   ]
+  },
+  {
+   "layout": "text-left",
+   "bg": "paper",
+   "elements": [
+    {
+     "type": "blob",
+     "x": 1380,
+     "y": 560,
+     "rx": 430,
+     "ry": 400,
+     "color": "butter"
+    },
+    {
+     "type": "model",
+     "id": "sp",
+     "model": "laptop",
+     "x": 1380,
+     "y": 560,
+     "height": 480,
+     "rot": [
+      30,
+      -20,
+      0
+     ],
+     "colors": {
+      "Body": "silver"
+     },
+     "textures": {
+      "Screen": "screen"
+     },
+     "float": 4
+    },
+    {
+     "type": "kicker",
+     "text": "06 — SPÉCIFICATIONS"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "주요 사양"
+     ]
+    },
+    {
+     "type": "specs",
+     "rows": [
+      [
+       "크기",
+       "312 × 221 × 13.9 mm"
+      ],
+      [
+       "무게",
+       "1.2 kg"
+      ],
+      [
+       "화면",
+       "14인치 무광 · 600nit"
+      ],
+      [
+       "단자",
+       "USB-C × 2 · 3.5mm"
+      ],
+      [
+       "색상",
+       "Tomate · Cobalt · Nuage"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "layout": "center",
+   "bg": "paper",
+   "elements": [
+    {
+     "type": "rain",
+     "shapes": [
+      "feather",
+      "star",
+      "feather",
+      "sparkle"
+     ],
+     "colors": [
+      "pink",
+      "lilac",
+      "sky",
+      "butter"
+     ],
+     "count": 12
+    },
+    {
+     "type": "blob",
+     "x": 960,
+     "y": 1120,
+     "rx": 1100,
+     "ry": 260,
+     "color": "peach",
+     "shadow": 0.08
+    },
+    {
+     "type": "title",
+     "lines": [
+      "folio."
+     ],
+     "role": "display",
+     "size": 220,
+     "track": -8,
+     "anim": "pop"
+    },
+    {
+     "type": "title",
+     "lines": [
+      "오늘을 적어 보세요"
+     ],
+     "size": 60,
+     "accent": 0
+    },
+    {
+     "type": "text",
+     "text": "2026.12 — DÉBUT",
+     "role": "display",
+     "size": 24,
+     "track": 10
+    }
+   ]
+  }
+ ]
+}

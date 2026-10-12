@@ -1,0 +1,31 @@
+{
+ "variant": "icon",
+ "title": [
+  "안전하게 쓰려면"
+ ],
+ "items": [
+  {
+   "title": "숫자보다 경향",
+   "text": "칼로리·영양소 추정은 참고만, 흐름을 보세요",
+   "art": "a wavy upward trend arrow on a simple chart, with a small number faintly crossed out beside it"
+  },
+  {
+   "title": "전문가 상담",
+   "text": "질환·특수 식이는 의사·영양사와 함께",
+   "art": "a smiling doctor and a nutritionist standing side by side, one holding a stethoscope and the other a salad bowl"
+  },
+  {
+   "title": "멈출 줄 알기",
+   "text": "스트레스·죄책감이면 잠시 쉬어가기",
+   "art": "a gentle hand pressing a soft round pause button, a steaming cup of tea sitting calmly beside it"
+  },
+  {
+   "title": "데이터 정책",
+   "text": "건강 정보 입력 전 서비스 정책 확인",
+   "art": "a padlock resting on a folder marked with a small heart-shaped health icon"
+  }
+ ],
+ "topic": "AI로 내 식습관 점검하기",
+ "project": "diet-check",
+ "added": "2026-10-12"
+}

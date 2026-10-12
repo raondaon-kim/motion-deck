@@ -1,0 +1,9 @@
+{
+  "name": "motion-deck-runtime",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/main.js --bundle --format=iife --minify --target=es2020 --legal-comments=eof --outfile=dist/motion-deck.js"
+  },
+  "dependencies": { "three": "0.180.0" },
+  "devDependencies": { "esbuild": "^0.28.0" }
+}

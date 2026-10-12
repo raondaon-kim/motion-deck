@@ -1,0 +1,51 @@
+{
+ "use": "마무리 인사",
+ "layout": "center",
+ "bg": "$paper",
+ "slots": {
+  "title": "lines:1-2",
+  "subtitle": "text?"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 960,
+   "y": 1120,
+   "rx": 1100,
+   "ry": 260,
+   "color": "$soft",
+   "enter": "up",
+   "seed": 11
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 96,
+   "accent": 1,
+   "mark": "squiggle",
+   "at": "{title@}"
+  },
+  {
+   "type": "text",
+   "text": "{subtitle}",
+   "if": "subtitle",
+   "alpha": 0.8
+  },
+  {
+   "type": "sticker",
+   "shape": "star",
+   "x": 420,
+   "y": 300,
+   "size": 40,
+   "color": "$accent"
+  },
+  {
+   "type": "sticker",
+   "shape": "sparkle",
+   "x": 1500,
+   "y": 260,
+   "size": 32,
+   "color": "$soft+3"
+  }
+ ]
+}

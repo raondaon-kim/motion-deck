@@ -1,0 +1,45 @@
+{
+ "use": "핵심 문장 하나를 크게 강조(인용, 원칙, 한 줄 결론)",
+ "layout": "center",
+ "bg": "$soft",
+ "slots": {
+  "text": "text (≤40자)",
+  "by": "text?"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 960,
+   "y": 540,
+   "rx": 820,
+   "ry": 300,
+   "color": "paper2",
+   "enter": "grow",
+   "seed": 9,
+   "shadow": 0.1
+  },
+  {
+   "type": "quote",
+   "text": "{text}",
+   "by": "{by}",
+   "size": 80,
+   "at": "{text@}"
+  },
+  {
+   "type": "sticker",
+   "shape": "sparkle",
+   "x": 330,
+   "y": 300,
+   "size": 40,
+   "color": "$accent"
+  },
+  {
+   "type": "sticker",
+   "shape": "star",
+   "x": 1600,
+   "y": 800,
+   "size": 34,
+   "color": "$soft+3"
+  }
+ ]
+}

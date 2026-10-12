@@ -1,0 +1,47 @@
+{
+ "variant": "bar",
+ "title": "변화, 전과 후",
+ "chart": {
+  "variant": "bar",
+  "data_source": "example",
+  "unit": "분",
+  "categories": [
+   {
+    "label": "메일"
+   },
+   {
+    "label": "회의록"
+   },
+   {
+    "label": "엑셀"
+   },
+   {
+    "label": "보고서"
+   }
+  ],
+  "series": [
+   {
+    "name": "AI 도입 전",
+    "values": [
+     40,
+     60,
+     50,
+     90
+    ]
+   },
+   {
+    "name": "AI 도입 후",
+    "values": [
+     15,
+     20,
+     20,
+     40
+    ]
+   }
+  ],
+  "delta": true
+ },
+ "topic": "AI를 활용한 사무직의 하루",
+ "project": "office-ai",
+ "added": "2026-10-12"
+}

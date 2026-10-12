@@ -1,0 +1,53 @@
+{
+ "use": "장(챕터) 시작. 번호 + 짧은 제목",
+ "layout": "center",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text",
+  "title": "lines:1-2",
+  "body": "text?"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 300,
+   "y": 220,
+   "r": 160,
+   "color": "$soft+2",
+   "enter": "grow",
+   "seed": 5,
+   "vary": {
+    "x": 60
+   }
+  },
+  {
+   "type": "blob",
+   "x": 1650,
+   "y": 880,
+   "r": 220,
+   "color": "$soft+5",
+   "enter": "grow",
+   "seed": 6,
+   "vary": {
+    "y": 50
+   }
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 104,
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "body",
+   "text": "{body}",
+   "if": "body",
+   "at": "{body@}"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "variant": "icon",
+ "title": [
+  "세 가지 역할"
+ ],
+ "items": [
+  {
+   "title": "오케스트레이터",
+   "text": "목표를 쪼개 배정하고 결과를 통합",
+   "art": "a small conductor robot waving a baton over a floating task board with three sticky notes"
+  },
+  {
+   "title": "작업자",
+   "text": "한 가지 역할에 집중해 결과물을 만든다",
+   "art": "a focused worker robot typing at a single desk with one open notebook"
+  },
+  {
+   "title": "검수자",
+   "text": "기준표로 평가해 통과·반려를 판정",
+   "art": "an inspector robot holding a clipboard with a checklist, examining a document with a magnifying glass"
+  }
+ ],
+ "topic": "AI 에이전트 오케스트레이션",
+ "project": "agent-orchestration",
+ "added": "2026-10-12"
+}

@@ -1,0 +1,77 @@
+{
+ "use": "표지. 강의 제목 + 부제 + 대표 일러스트(오른쪽)",
+ "layout": "hero",
+ "bg": "$paper",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1-2",
+  "subtitle": "text (≤16자)",
+  "art": "illustration"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 1420,
+   "y": 560,
+   "r": 420,
+   "color": "$soft",
+   "enter": "right",
+   "seed": 1,
+   "vary": {
+    "y": 30
+   }
+  },
+  {
+   "type": "blob",
+   "x": 180,
+   "y": 1070,
+   "rx": 460,
+   "ry": 250,
+   "color": "$soft+3",
+   "enter": "left",
+   "seed": 2
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 1420,
+   "y": 540,
+   "w": 680,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 96,
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "title",
+   "size": 44,
+   "weight": 500,
+   "accent": [
+    0,
+    1,
+    2
+   ],
+   "mark": "squiggle",
+   "at": "{subtitle@}",
+   "text": "{subtitle}"
+  },
+  {
+   "type": "sticker",
+   "shape": "sparkle",
+   "x": 1820,
+   "y": 190,
+   "size": 36,
+   "color": "$accent"
+  }
+ ]
+}

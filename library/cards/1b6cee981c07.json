@@ -1,0 +1,29 @@
+{
+ "variant": "icon",
+ "title": "AI 적용 사례",
+ "items": [
+  {
+   "title": "메일",
+   "text": "초안 작성과 회신 요약을 돕는다",
+   "art": "a tiny robot hand drafting a short email on a floating envelope with a small checkmark badge"
+  },
+  {
+   "title": "회의록",
+   "text": "녹음에서 요약과 할 일을 뽑는다",
+   "art": "a small robot wearing headphones listening to a microphone while typing meeting notes with bullet points"
+  },
+  {
+   "title": "엑셀",
+   "text": "수식 작성과 데이터 정리를 돕는다",
+   "art": "a small robot pointing at a spreadsheet grid with glowing cells and a tidy formula bar above it"
+  },
+  {
+   "title": "보고서",
+   "text": "구조 잡기와 문장 다듬기를 돕는다",
+   "art": "a small robot editor polishing a document with a red pen next to a tidy outline tree"
+  }
+ ],
+ "topic": "AI를 활용한 사무직의 하루",
+ "project": "office-ai",
+ "added": "2026-10-12"
+}

@@ -1,0 +1,44 @@
+{
+ "use": "한 문장 메시지 + 큰 일러스트(아래 가운데). 핵심 비유나 장면",
+ "layout": "top",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1",
+  "art": "illustration"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 960,
+   "y": 760,
+   "rx": 560,
+   "ry": 300,
+   "color": "$soft+4",
+   "enter": "up",
+   "seed": 7
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 960,
+   "y": 690,
+   "w": 560,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 76,
+   "accent": 0,
+   "at": "{title@}"
+  }
+ ]
+}

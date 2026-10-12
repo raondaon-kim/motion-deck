@@ -1,0 +1,59 @@
+{
+ "variant": "scatter",
+ "title": "반복 업무의 무게",
+ "chart": {
+  "variant": "scatter",
+  "data_source": "example",
+  "xLabel": "소요 시간",
+  "yLabel": "체감 가치",
+  "xEnds": [
+   "짧음",
+   "김"
+  ],
+  "yEnds": [
+   "낮음",
+   "높음"
+  ],
+  "points": [
+   {
+    "label": "보고서 서식",
+    "x": 7,
+    "y": 2
+   },
+   {
+    "label": "회의록",
+    "x": 6,
+    "y": 3
+   },
+   {
+    "label": "데이터 취합",
+    "x": 8,
+    "y": 2
+   },
+   {
+    "label": "전략 기획",
+    "x": 7,
+    "y": 8
+   },
+   {
+    "label": "고객 면담",
+    "x": 4,
+    "y": 9
+   }
+  ],
+  "zone": {
+   "x": [
+    5,
+    10
+   ],
+   "y": [
+    0,
+    4
+   ],
+   "label": "AI에게 맡길 영역"
+  }
+ },
+ "topic": "AI를 활용한 사무직의 하루",
+ "project": "office-ai",
+ "added": "2026-10-12"
+}

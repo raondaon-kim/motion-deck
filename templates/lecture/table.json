@@ -1,0 +1,42 @@
+{
+ "use": "표. 항목 × 속성 정리. variant로 형태 선택: compare(비교, 기본) · matrix(✓✗△ 가능 여부) · before-after(전/후) · steps(번호 절차). 2~3열(matrix 4), 2~5행, 칸은 짧은 구",
+ "layout": "top",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1",
+  "variant": "compare|matrix|before-after|steps (default compare)",
+  "columns": "columns:2-3 (matrix 2-4)",
+  "rows": "rows:2-5 [{cells, at: cue}]",
+  "emph": "column index?",
+  "highlight": "row index?"
+ },
+ "elements": [
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "size": 68,
+   "accent": 0,
+   "at": "{title@}"
+  },
+  {
+   "type": "table",
+   "columns": "{columns}",
+   "rows": "{rows}",
+   "highlight": "{highlight}",
+   "x": 180,
+   "y": 300,
+   "w": 1560,
+   "h": 700,
+   "headColor": "$soft+3",
+   "at": "{columns@}",
+   "variant": "{variant}",
+   "emph": "{emph}"
+  }
+ ]
+}

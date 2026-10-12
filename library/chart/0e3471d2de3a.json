@@ -1,0 +1,39 @@
+{
+ "variant": "donut",
+ "title": "사무직의 시간은 어디로 가나",
+ "chart": {
+  "variant": "donut",
+  "data_source": "example",
+  "unit": "%",
+  "items": [
+   {
+    "label": "문서 작성",
+    "value": 25
+   },
+   {
+    "label": "메일",
+    "value": 18
+   },
+   {
+    "label": "회의",
+    "value": 20
+   },
+   {
+    "label": "자료 조사",
+    "value": 12
+   },
+   {
+    "label": "반복 작업",
+    "value": 25
+   }
+  ],
+  "center": {
+   "value": "8시간",
+   "label": "하루 업무"
+  },
+  "highlight": 4
+ },
+ "topic": "AI를 활용한 사무직의 하루",
+ "project": "office-ai",
+ "added": "2026-10-12"
+}

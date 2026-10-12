@@ -1,0 +1,53 @@
+{
+ "use": "concept-left의 좌우 반전. 연속된 개념 슬라이드의 리듬을 바꿀 때",
+ "layout": "text-right",
+ "bg": "$soft",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:2",
+  "body": "text",
+  "art": "illustration"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 520,
+   "y": 560,
+   "r": 400,
+   "color": "$soft+4",
+   "enter": "grow",
+   "seed": 4,
+   "vary": {
+    "x": 40,
+    "y": 40,
+    "r": 30
+   }
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 520,
+   "y": 550,
+   "w": 600,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "body",
+   "text": "{body}",
+   "at": "{body@}"
+  }
+ ]
+}

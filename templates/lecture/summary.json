@@ -1,0 +1,50 @@
+{
+ "use": "정리. 핵심 3~4개를 체크 목록으로",
+ "layout": "text-left",
+ "bg": "$paper",
+ "slots": {
+  "kicker": "text?",
+  "title": "lines:1-2",
+  "items": "items:3-4 (strings)",
+  "art": "illustration?"
+ },
+ "elements": [
+  {
+   "type": "blob",
+   "x": 1420,
+   "y": 560,
+   "r": 360,
+   "color": "$soft",
+   "enter": "grow",
+   "seed": 10
+  },
+  {
+   "type": "image",
+   "src": "{art}",
+   "x": 1420,
+   "y": 550,
+   "w": 520,
+   "frame": "none",
+   "enter": "pop",
+   "at": "{art@}",
+   "if": "art"
+  },
+  {
+   "type": "kicker",
+   "text": "{kicker}",
+   "if": "kicker"
+  },
+  {
+   "type": "title",
+   "lines": "{title}",
+   "accent": 1,
+   "at": "{title@}"
+  },
+  {
+   "type": "bullets",
+   "items": "{items}",
+   "bullet": "star",
+   "at": "{items@}"
+  }
+ ]
+}
